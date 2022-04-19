@@ -15,11 +15,12 @@
 <body>
     <!-- Шапка -->
     <div class="container">
-        <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+        <header class="d-flex flex-wrap justify-content-center py-3 mb-5">
             <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
                 <img src="{{ url_for('static', filename='img/weather.png') }}" alt="WeatherNOW" width="64" height="64">
                 <span class="fs-4">Weather Now</span>
             </a>
+            <h1 class="display-4 fw-bold">Погода в {% block header %}{% endblock %}</h1>
         </header>
     </div>
 
@@ -27,7 +28,7 @@
     {% block content %}{% endblock %}
 
     <!-- Подвал -->
-    <footer class="container d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+    <footer class="container d-flex flex-wrap justify-content-between align-items-center py-3 border-top">
         <p class="col-md-4 mb-0 text-muted">© WeatherNOW, 2022</p>
         <a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
             <img src="{{ url_for('static', filename='img/weather.png') }}" alt="WeatherNOW" width="32" height="32">
