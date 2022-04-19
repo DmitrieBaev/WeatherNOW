@@ -15,9 +15,10 @@ def index():
     :return: Шаблон главной страницы
     """
     # Можно использовать request.remote_addr или request.environ['REMOTE_ADDR']
-    get_geo(request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr))
-    return render_template('index.html')
+    geolocation = get_geo(request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr))
+    return render_template('index.html',
+                           location=geolocation, weather=Weather('eng', f"{geolocation['city']}, {geolocation['countryCode']}"))
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
