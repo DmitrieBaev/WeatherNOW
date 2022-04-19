@@ -10,7 +10,7 @@ class Weather:
         Конструктор
 
         :param language: Язык вывода информации
-        :param country_data: Данные о локации вида: Страна, КодСтраны (Gomel, BY)
+        :param country_data: Данные о локации вида: Город, КодСтраны (Gomel, BY)
         """
 
         config_dict = get_default_config()
@@ -18,7 +18,16 @@ class Weather:
         mgr = OWM('2baccc8dde391cff0003273e68813ea8').weather_manager()
         self.observation = mgr.weather_at_place(country_data).weather
         self.forecast = mgr.forecast_at_place(country_data, '3h')
-        self.ico = self.get_status_html(size=512)
+        self.ico = self.get_status_html(size=128)
+
+    def get_temperature(self, sys='celsius'):
+        """
+        Температура
+
+        :param sys: система измерения Градусы/Фаренгейты
+        :return: числовое выражение температуры
+        """
+        return round(self.observation.temperature(sys)['temp'])
 
     def get_status_html(self, size: int):
         """ :return: SVG-файл статуса погоды """
@@ -44,16 +53,19 @@ class Weather:
         else:
             return '<img src="{{ url_for(\'static\', filename=\'img/unknown_weather.png\') }}"' + f' alt="Unknown Weather" width="{size}" height="{size}">'
 
-    def get_future_status(self):
+    def get_future_rain_1_day(self):
         """
-        Статус атмосферы на ближайшие 5 дней
+        Прогноз дождя на завтрашний день
 
-        :return: Дождь, Снег, Туман,
+        :return: Прогноз
         """
+        return f'На завтра {"ожидается дождь" if self.forecast.will_be_rainy_at(timestamps.tomorrow()) else "дождь не ожидается"}.'
 
-        return f'На завтра {"ожидается дождь" if self.forecast.will_be_rainy_at(timestamps.tomorrow()) else "дождь не ожидается"}.',\
-               'В ближайшие 5 дней ожидается снег' if self.forecast.will_have_snow() else None,\
-               'В ближайшие 5 дней ожидается туман' if self.forecast.will_have_fog() else None
+    def get_future_snow_5_day(self):
+        return 'В ближайшие 5 дней ожидается снег' if self.forecast.will_have_snow() else ''
+
+    def get_future_fog_5_day(self):
+        return 'В ближайшие 5 дней ожидается туман' if self.forecast.will_have_fog() else ''
 
 
 if __name__ == '__main__':
@@ -61,4 +73,4 @@ if __name__ == '__main__':
     print(w.observation.status)  # Статус
     print(w.observation.wind()['speed'])  # Скорость ветра
     print(w.observation.humidity)  # Влажность
-    print(round(w.observation.temperature('celsius')['temp']))
+    print(w.get_temperature())
