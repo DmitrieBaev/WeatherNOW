@@ -10,7 +10,7 @@ def index():
     """
     Обработка главной страницы
 
-    :return:
+    :return: Шаблон главной страницы
     """
     # Можно использовать request.remote_addr или request.environ['REMOTE_ADDR']
     ipaddr = request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr)
