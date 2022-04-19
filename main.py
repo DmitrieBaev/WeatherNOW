@@ -1,4 +1,7 @@
-from flask import Flask, request
+from flask import (Flask,
+                   request, render_template,
+                   url_for)
+
 app = Flask(__name__)
 
 
@@ -11,7 +14,7 @@ def index():
     """
     # Можно использовать request.remote_addr или request.environ['REMOTE_ADDR']
     ipaddr = request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr)
-    return f'<p>IP: {ipaddr}</p>'
+    return render_template('index.html')
 
 
 if __name__ == '__main__':
